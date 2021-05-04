@@ -1,7 +1,7 @@
 import express from 'express';
 var fs = require('fs');
 var path = require('path');
-const svg2img = require('svg2img');
+const svg2png = require('svg2png');
 const aws = require('./utils/aws');
 var dir = path.join(__dirname, 'public');
 var crypto = require('crypto');
@@ -57,9 +57,9 @@ app.get('/png/:width?', async (req, res) => {
   //
   //     });
   //   });
-    // svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
-    //     .then(buffer => png = buffer)
   const appString = RDS.renderToString(<Avataaars {...req.query} />);
+    await svg2png(appString, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
+        .then(buffer => console.log(buffer) )
 
   res.writeHead(200, {
     'Content-Type': 'image/svg+xml',
