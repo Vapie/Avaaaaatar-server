@@ -46,19 +46,18 @@ app.get('/png/:width?', async (req, res) => {
 
     const appString = RDS.renderToString(<Avataaars {...req.query} />);
 
-    let png;
-    svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
+    let jpeg;
+    svg2img(appString, {format:'jpeg','quality':75}, function(error, buffer) {
       //default jpeg quality is 75
-      console.log('On é là');
-      png=buffer;
+      console.log('Generating new avatar');
+      aws.uploadFile(fileName, buffer, () => {
+        res.end(jpeg);
+      });
     });
     // svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
     //     .then(buffer => png = buffer)
 
-    console.log('Generating new avatar');
-    aws.uploadFile(fileName, png, () => {
-      res.end(png);
-    });
+
   });
 });
 
