@@ -35,9 +35,9 @@ app.get('/png/:width?', async (req, res) => {
   // You'll have to add this back to the package.json
 
   const hash = getHash(req);
-  const fileName = `${getHash(req)}.png`;
+  const fileName = `${getHash(req)}.jpg`;
 
-  res.set('Content-Type', 'image/png');
+  res.set('Content-Type', 'image/jpeg');
 
   aws.getObject(fileName, async (err, data) => {
     if (data) {
@@ -49,7 +49,7 @@ app.get('/png/:width?', async (req, res) => {
     appString = RDS.renderToString(<Avataaars {...req.query} />);
 
     let jpeg;
-    svg2img(appString, {format:'png','quality':75}, function(error, buffer) {
+    svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
       //default jpeg quality is 75
       console.log(RDS.renderToString(<Avataaars {...req.query} />));
       console.log(buffer);
