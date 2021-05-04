@@ -1,8 +1,9 @@
 import express from 'express';
-
+var fs = require('fs');
+var path = require('path');
 const svg2img = require('svg2img');
 const aws = require('./utils/aws');
-
+var dir = path.join(__dirname, 'public');
 var crypto = require('crypto');
 
 // React Components
@@ -49,9 +50,8 @@ app.get('/png/:width?', async (req, res) => {
     let jpeg;
     svg2img(appString, {format:'png','quality':75}, function(error, buffer) {
       //default jpeg quality is 75
-      console.log('Generating new avatar');
-      aws.uploadFile(fileName, buffer, () => {
-        res.end(jpeg);
+      fs.writeFileSync(dir+fileName, buffer);
+
       });
     });
     // svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
