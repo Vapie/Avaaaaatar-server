@@ -32,7 +32,7 @@ app.get('/png/:width?', async (req, res) => {
 
 
   // You'll have to add this back to the package.json
-  const { convert } = require('convert-svg-to-png');
+  const svg2png = require("svg2png");
 
   const hash = getHash(req);
   const fileName = `${getHash(req)}.png`;
@@ -47,12 +47,9 @@ app.get('/png/:width?', async (req, res) => {
 
     const appString = RDS.renderToString(<Avataaars {...req.query} />);
 
-    const png = await convert(appString, {
-      width: parseInt(req.params.width || 500, 10),
-      puppeteer: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-    });
+    let png;
+    svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
+        .then(buffer => png = buffer)
 
     console.log('Generating new avatar');
     aws.uploadFile(fileName, png, () => {
