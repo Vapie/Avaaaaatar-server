@@ -45,7 +45,8 @@ app.get('/png/:width?', async (req, res) => {
       return res.end(data.Body);
     }
 
-    const appString = RDS.renderToString(<Avataaars {...req.query} />);
+    let appString;
+    appString = RDS.renderToString(<Avataaars {...req.query} />);
 
     let jpeg;
     svg2img(appString, {format:'png','quality':75}, function(error, buffer) {
@@ -59,7 +60,7 @@ app.get('/png/:width?', async (req, res) => {
 
 
   });
-});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
