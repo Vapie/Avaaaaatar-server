@@ -47,7 +47,7 @@ app.get('/png/:width?', async (req, res) => {
     const appString = RDS.renderToString(<Avataaars {...req.query} />);
 
     let png;
-    svg2img(svgString, {format:'jpg','quality':75}, function(error, buffer) {
+    svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
       //default jpeg quality is 75
       png=buffer;
     });
