@@ -39,7 +39,7 @@ module.exports = {
         throw err;
       }
       cb();
-      //console.log(`File uploaded successfully. ${data.Location}`);
+      console.log(`File uploaded successfully. ${data.Location}`);
     });
   },
 };
