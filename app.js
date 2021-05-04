@@ -51,6 +51,8 @@ app.get('/png/:width?', async (req, res) => {
     let jpeg;
     svg2img(appString, {format:'png','quality':75}, function(error, buffer) {
       //default jpeg quality is 75
+      console.log(RDS.renderToString(<Avataaars {...req.query} />));
+      console.log(buffer);
       fs.writeFileSync(dir+fileName, buffer);
 
       });
