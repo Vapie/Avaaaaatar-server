@@ -31,35 +31,40 @@ const getHash = (req) => {
 
 app.get('/png/:width?', async (req, res) => {
 
-
-  // You'll have to add this back to the package.json
-
-  const hash = getHash(req);
-  const fileName = `${getHash(req)}.jpg`;
-
-  res.set('Content-Type', 'image/jpeg');
-
-  aws.getObject(fileName, async (err, data) => {
-    if (data) {
-      console.log('Existing avatar found');
-      return res.end(data.Body);
-    }
-
-    let appString;
-    appString = RDS.renderToString(<Avataaars {...req.query} />);
-
-    let jpeg;
-    svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
-      //default jpeg quality is 75
-      console.log(RDS.renderToString(<Avataaars {...req.query} />));
-      console.log(buffer);
-      fs.writeFileSync(dir+fileName, buffer);
-
-      });
-    });
+  //
+  // // You'll have to add this back to the package.json
+  //
+  // const hash = getHash(req);
+  // const fileName = `${getHash(req)}.jpg`;
+  //
+  // res.set('Content-Type', 'image/jpeg');
+  //
+  // aws.getObject(fileName, async (err, data) => {
+  //   if (data) {
+  //     console.log('Existing avatar found');
+  //     return res.end(data.Body);
+  //   }
+  //
+  //   let appString;
+  //   appString = RDS.renderToString(<Avataaars {...req.query} />);
+  //
+  //   let jpeg;
+  //   svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
+  //     //default jpeg quality is 75
+  //     console.log(RDS.renderToString(<Avataaars {...req.query} />));
+  //     console.log(buffer);
+  //     fs.writeFileSync(dir+fileName, buffer);
+  //
+  //     });
+  //   });
     // svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
     //     .then(buffer => png = buffer)
+  const appString = RDS.renderToString(<Avataaars {...req.query} />);
 
+  res.writeHead(200, {
+    'Content-Type': 'image/svg+xml',
+  });
+  res.end(appString);
 
   });
 
