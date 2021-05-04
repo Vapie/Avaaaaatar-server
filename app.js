@@ -1,9 +1,8 @@
 import express from 'express';
-var fs = require('fs');
-var path = require('path');
-const svg2png = require('svg2png');
+
+const svg2img = require('svg2img');
 const aws = require('./utils/aws');
-var dir = path.join(__dirname, 'public');
+
 var crypto = require('crypto');
 
 // React Components
@@ -30,14 +29,22 @@ const getHash = (req) => {
 };
 
 app.get('/png/:width?', async (req, res) => {
+  if (req.query.facialHairType === 'BeardMagestic') {
+    req.query.facialHairType = 'BeardMajestic';
+  }
+  const appString = RDS.renderToString(<Avataaars {...req.query} />);
 
-  //
-  // // You'll have to add this back to the package.json
-  //
+  res.writeHead(200, {
+    'Content-Type': 'image/svg+xml',
+  });
+  res.end(appString);
+
+  // You'll have to add this back to the package.json
+
   // const hash = getHash(req);
-  // const fileName = `${getHash(req)}.jpg`;
+  // const fileName = `${getHash(req)}.png`;
   //
-  // res.set('Content-Type', 'image/jpeg');
+  // res.set('Content-Type', 'image/png');
   //
   // aws.getObject(fileName, async (err, data) => {
   //   if (data) {
@@ -45,29 +52,22 @@ app.get('/png/:width?', async (req, res) => {
   //     return res.end(data.Body);
   //   }
   //
-  //   let appString;
-  //   appString = RDS.renderToString(<Avataaars {...req.query} />);
+  //   const appString = RDS.renderToString(<Avataaars {...req.query} />);
   //
-  //   let jpeg;
-  //   svg2img(appString, {format:'jpg','quality':75}, function(error, buffer) {
+  //   let png;
+  //   svg2img(svgString, {format:'jpg','quality':75}, function(error, buffer) {
   //     //default jpeg quality is 75
-  //     console.log(RDS.renderToString(<Avataaars {...req.query} />));
-  //     console.log(buffer);
-  //     fs.writeFileSync(dir+fileName, buffer);
-  //
-  //     });
+  //     fs.writeFileSync('foo5.jpg', buffer);
   //   });
-  const appString = RDS.renderToString(<Avataaars {...req.query} />);
-    await svg2png(appString, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
-        .then(buffer => console.log(buffer) )
-
-  res.writeHead(200, {
-    'Content-Type': 'image/svg+xml',
-  });
-  res.end(appString);
-
-  });
-
+  //   // svg2png(sourceBuffer, { width:  parseInt(req.params.width || 500, 10), height:  parseInt(req.params.width || 500, 10) })
+  //   //     .then(buffer => png = buffer)
+  //
+  //   console.log('Generating new avatar');
+  //   aws.uploadFile(fileName, png, () => {
+  //     res.end(png);
+  //   });
+  // });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
