@@ -36,6 +36,7 @@ module.exports = {
     // Uploading files to the bucket
     s3.upload(params, function(err, data) {
       if (err) {
+        console.log(`File uploaded unsuccessful`);
         throw err;
       }
       cb();
