@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 let s3 = false;
 
 try {
-  //const credentials = require('../credentials.js');
+  const credentials = require('../credentials.js');
   s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_ID,
     secretAccessKey: process.env.AWS_SECRET,
@@ -25,7 +25,7 @@ module.exports = {
   },
   uploadFile: (fileName, fileContent, cb) => {
     if (!s3) return cb();
-
+      console.log("onéla" + fileName)
     const params = {
       Bucket: 'avataaars.io',
       Key: fileName,
