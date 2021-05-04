@@ -29,9 +29,7 @@ const getHash = (req) => {
 };
 
 app.get('/png/:width?', async (req, res) => {
-  if (process.env.DISABLE_PNG) {
-    return res.send('PNG is turned off due to abuse, but you can use SVGs still! https://github.com/gkoberger/avataaars/issues/16');
-  }
+
 
   // You'll have to add this back to the package.json
   const { convert } = require('convert-svg-to-png');
